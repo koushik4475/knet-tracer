@@ -1,6 +1,9 @@
 <div align="center">
 
-# ⚡ knet-tracer
+# Knet Tracer | Linux eBPF Network Observability and Kernel Telemetry in Go
+
+Knet Tracer is a Go-based Linux network observability project that uses eBPF hooks to collect kernel-level network telemetry. The README describes tracing through kprobes, tracepoints, and traffic-control hooks, with metrics exposed for monitoring systems such as Prometheus and OpenTelemetry. It is relevant to SREs and systems developers investigating packet paths, TCP behavior, drops, and network performance on Linux.
+
 
 ### **Distributed eBPF Observability & Kernel Network Telemetry Engine**
 
