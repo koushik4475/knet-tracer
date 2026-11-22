@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
-	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -55,7 +56,7 @@ func main() {
 	promExp := exporter.NewPrometheusExporter(aggregator, *metricsAddr)
 	go func() {
 		log.Printf("[knet-tracer] Prometheus metrics server listening at http://%s/metrics\n", *metricsAddr)
-		if err := promExp.Start(ctx); err != nil && err != httpErrClosed() {
+		if err := promExp.Start(ctx); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Printf("[knet-tracer] metrics server error: %v\n", err)
 		}
 	}()
@@ -84,10 +85,6 @@ func main() {
 	_ = promExp.Shutdown(context.Background())
 	_ = consumer.Close()
 	log.Println("[knet-tracer] engine stopped.")
-}
-
-func httpErrClosed() error {
-	return fmt.Errorf("http: Server closed")
 }
 
 // runTelemetrySimulator produces synthetic realistic telemetry matching real Linux kernel probes
